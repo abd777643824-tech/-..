@@ -4,15 +4,25 @@ const fetch = require('node-fetch');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const API_KEY = process.env.API_KEY;
-const MODEL = "models/gemini-2.5-flash";
+const API_KEY = process.env.API_KEY; 
 
-app.use(express.json());
-app.use(express.static('public')); // يخدم ملفات HTML/CSS/JS
-
-app.post('/chat', async (req, res) => {
+async function handleChat(req, res) {
   const userText = req.body.text;
 
+  const payload = {
+    prompt: userText,
+    // 
+  };
+
+  const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+
+  const data = await response.json();
+  res.json({ reply: data.candidates[0].content.parts[0].text });
+}
   try {
     const payload = {
       prompt: [
