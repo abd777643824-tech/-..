@@ -91,11 +91,11 @@ async function send(){
     chat.appendChild(loader);
 
     try{
-        let response = await fetch("https://adwaaonlain.vercel.app/api/chat", {
+        fetch("https://adwaaonlain.vercel.app/api/chat", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ text })
-       });
+    })
         let data=await response.json();
         loader.remove();
         addMessage(data.reply || "💡 حصل ضغط على السيرفر حاول مرة ثانية","bot");
